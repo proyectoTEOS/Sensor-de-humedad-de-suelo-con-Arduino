@@ -7,28 +7,28 @@
   Twitter https://goo.gl/du5Wgn
   Github https://goo.gl/Xl5IiS
   Google Plus https://goo.gl/gBnUdh
-  WEB https://goo.gl/jtiYJy
+  WEB https://www.proyecto-teos.com/
 */
 
-const int sensorPinT = A0;
-
-int valT;
+const uint8_t soilPinT = A0;
 
 void setup() {
   Serial.begin(9600);
 }
+
 void loop() {
-  valT = map(analogRead(sensorPinT), 0, 1023, 100, 0);
-  valT = constrain (valT, 0, 100);
-  Serial.print("Hay un ");
-  Serial.print(valT);
-  Serial.print("% de humedad, ");
-  if ((valT >= 0) and (valT <= 33)) {
-    Serial.println("Suelo seco");
-  } else if ((valT >= 34) and (valT <= 66)) {
-    Serial.println("Suelo humedo");
-  } else {
-    Serial.println("Suelo mojado");
-  }
+  char toCharSoilT[3], resultSerialT[15];
+  uint8_t valueSoilT;
+
+  valueSoilT = map(analogRead(soilPinT), 200, 1023, 100, 0);
+  valueSoilT = constrain (valueSoilT, 0, 100);
+
+  dtostrf(valueSoilT, 3, 0, toCharSoilT);
+
+  strcpy(resultSerialT, toCharSoilT);
+  strcat(resultSerialT, "% de humedad");
+
+  Serial.println(resultSerialT);
+
   delay(1000);
 }
